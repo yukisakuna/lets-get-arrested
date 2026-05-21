@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>みんなで逮捕されようプロジェクト</title>
+  <style>
+    html {
+      font-family: serif;
+      line-height: 1.8;
+    }
+
+    body {
+      margin: 1rem;
+      background: #fff;
+      color: #111;
+    }
+
+    p {
+      margin: 0;
+      font-size: 18px;
+      overflow-wrap: anywhere;
+    }
+  </style>
+</head>
+
+<body>
+  <p id="numbers"></p>
+
+  <script>
+    const output = document.getElementById("numbers");
+    const weights = [6, 5, 4, 3, 2, 7, 6, 5, 4, 3, 2];
+    let source = BigInt(Math.floor(Math.random() * 100000000000));
+
+    function checkDigit(value) {
+      let sum = 0;
+      for (let i = 0; i < weights.length; i += 1) {
+        sum += Number(value[i]) * weights[i];
+      }
+      const raw = 11 - (sum % 11);
+      return raw <= 9 ? raw : 0;
+    }
+
+    function writeNumbers() {
+      let text = "";
+      for (let i = 0; i < 500; i += 1) {
+        const value = String(source).padStart(11, "0");
+        text += `${value}${checkDigit(value)} `;
+        source = (source + 1n) % 100000000000n;
+      }
+      output.append(document.createTextNode(text));
+      requestAnimationFrame(writeNumbers);
+    }
+
+    writeNumbers();
+  </script>
+</body>
+
+</html>
